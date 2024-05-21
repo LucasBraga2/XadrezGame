@@ -133,38 +133,38 @@ public class Partida {
 	}
 
 	public void configIncial() {
-		posicionandoPeca(new Torre(Cor.BRANCO, tabuleiro), "A1");
-		posicionandoPeca(new Cavalo(Cor.BRANCO, tabuleiro), "B1");
-		posicionandoPeca(new Bispo(Cor.BRANCO, tabuleiro), "C1");
-		posicionandoPeca(new Rainha(Cor.BRANCO, tabuleiro), "D1");
-		posicionandoPeca(new Rei(Cor.BRANCO, tabuleiro), "E1");
-		posicionandoPeca(new Bispo(Cor.BRANCO, tabuleiro), "F1");
-		posicionandoPeca(new Cavalo(Cor.BRANCO, tabuleiro), "G1");
-		posicionandoPeca(new Torre(Cor.BRANCO, tabuleiro), "H1");
-		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro), "A2");
-		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro), "B2");
-		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro), "C2");
-		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro), "D2");
-		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro), "E2");
-		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro), "F2");
-		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro), "G2");
-		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro), "H2");
-		posicionandoPeca(new Torre(Cor.PRETO, tabuleiro), "A8");
-		posicionandoPeca(new Cavalo(Cor.PRETO, tabuleiro), "B8");
-		posicionandoPeca(new Bispo(Cor.PRETO, tabuleiro), "C8");
-		posicionandoPeca(new Rainha(Cor.PRETO, tabuleiro), "D8");
-		posicionandoPeca(new Rei(Cor.PRETO, tabuleiro), "E8");
-		posicionandoPeca(new Bispo(Cor.PRETO, tabuleiro), "F8");
-		posicionandoPeca(new Cavalo(Cor.PRETO, tabuleiro), "G8");
-		posicionandoPeca(new Torre(Cor.PRETO, tabuleiro), "H8");
-		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro), "A7");
-		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro), "B7");
-		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro), "C7");
-		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro), "D7");
-		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro), "E7");
-		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro), "F7");
-		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro), "G7");
-		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro), "H7");
+		posicionandoPeca(new Torre(Cor.BRANCO, tabuleiro, this), "A1");
+		posicionandoPeca(new Cavalo(Cor.BRANCO, tabuleiro, this), "B1");
+		posicionandoPeca(new Bispo(Cor.BRANCO, tabuleiro, this), "C1");
+		posicionandoPeca(new Rainha(Cor.BRANCO, tabuleiro, this), "D1");
+		posicionandoPeca(new Rei(Cor.BRANCO, tabuleiro, this), "E1");
+		posicionandoPeca(new Bispo(Cor.BRANCO, tabuleiro, this), "F1");
+		posicionandoPeca(new Cavalo(Cor.BRANCO, tabuleiro, this), "G1");
+		posicionandoPeca(new Torre(Cor.BRANCO, tabuleiro, this), "H1");
+		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro, this), "A2");
+		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro, this), "B2");
+		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro, this), "C2");
+		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro, this), "D2");
+		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro, this), "E2");
+		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro, this), "F2");
+		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro, this), "G2");
+		posicionandoPeca(new Peao(Cor.BRANCO, false, tabuleiro, this), "H2");
+		posicionandoPeca(new Torre(Cor.PRETO, tabuleiro, this), "A8");
+		posicionandoPeca(new Cavalo(Cor.PRETO, tabuleiro, this), "B8");
+		posicionandoPeca(new Bispo(Cor.PRETO, tabuleiro, this), "C8");
+		posicionandoPeca(new Rainha(Cor.PRETO, tabuleiro, this), "D8");
+		posicionandoPeca(new Rei(Cor.PRETO, tabuleiro, this), "E8");
+		posicionandoPeca(new Bispo(Cor.PRETO, tabuleiro, this), "F8");
+		posicionandoPeca(new Cavalo(Cor.PRETO, tabuleiro, this), "G8");
+		posicionandoPeca(new Torre(Cor.PRETO, tabuleiro, this), "H8");
+		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro, this), "A7");
+		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro, this), "B7");
+		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro, this), "C7");
+		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro, this), "D7");
+		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro, this), "E7");
+		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro, this), "F7");
+		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro, this), "G7");
+		posicionandoPeca(new Peao(Cor.PRETO, false, tabuleiro, this), "H7");
 
 	}
 

@@ -7,10 +7,10 @@ public class Bispo extends Pecas {
 	private Tab t;
 	private Partida game;
 
-	public Bispo(Cor cor, Tab tabuleiro) {
+	public Bispo(Cor cor, Tab tabuleiro, Partida game) {
 		super(cor);
 		this.t = tabuleiro;
-		this.game = new Partida(t);
+		this.game = game;
 	}
 
 	@Override

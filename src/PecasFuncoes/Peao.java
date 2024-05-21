@@ -9,12 +9,11 @@ public class Peao extends Pecas {
 	private Tab t;
 	private Partida game;
 
-	public Peao(Cor cor, boolean movimentado, Tab tabuleiro) {
+	public Peao(Cor cor, boolean movimentado, Tab tabuleiro, Partida game) {
 		super(cor);
 		this.movimentado = movimentado;
 		this.t = tabuleiro;
-		this.game = new Partida(t);
-		// TODO Auto-generated constructor stub
+		this.game = game;
 	}
 
 	public boolean isMovimentado() {

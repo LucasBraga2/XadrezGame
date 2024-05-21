@@ -9,10 +9,10 @@ public class Rei extends Pecas {
 	private Tab t;
 	private Partida game;
 	
-	public Rei(Cor cor, Tab tabuleiro) {
+	public Rei(Cor cor, Tab tabuleiro, Partida game) {
 		super(cor);
 		this.t = tabuleiro;
-		this.game = new Partida(t);
+		this.game = game;
 	}
 
 	@Override

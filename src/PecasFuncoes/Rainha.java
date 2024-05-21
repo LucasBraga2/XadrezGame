@@ -8,10 +8,10 @@ public class Rainha extends Pecas{
 	private Tab t;
 	private Partida game;
 	
-	public Rainha(Cor cor, Tab tabuleiro) {
+	public Rainha(Cor cor, Tab tabuleiro, Partida game) {
 		super(cor);
 		this.t = tabuleiro;
-		this.game = new Partida(t);	
+		this.game = game;	
 	}
 	
 	@Override
