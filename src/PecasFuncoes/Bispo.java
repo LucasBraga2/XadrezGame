@@ -1,4 +1,3 @@
-
 package PecasFuncoes;
 
 import Game.Partida;
