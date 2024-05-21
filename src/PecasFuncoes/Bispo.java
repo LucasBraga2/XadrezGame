@@ -66,11 +66,9 @@ public class Bispo extends Pecas {
 						return true;
 					}
 				} else {
-					System.out.println("Movimento inválido: O caminho está bloqueado.");
 					return false;
 				}
 			} else {
-				System.out.println("Movimento inválido: O bispo só pode se mover diagonalmente.");
 				return false;
 			}
 		}

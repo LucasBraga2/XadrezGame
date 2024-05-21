@@ -34,14 +34,14 @@ public class Torre extends Pecas {
 			
 			// Verifica se o movimento é na mesma coluna ou na mesma linha
 			if (linha == linha2 || coluna == coluna2) {
-				int direcaoLinha = Integer.compare(linha2, linha);
+				int direcaoLinha = Integer.compare(linha2, linha);//Retorna 1, -1 ou 0(1 PARA SUBIR OU DIREITA)
 				int direcaoColuna = Integer.compare(coluna2, coluna);
 				int linhaAtual = linha + direcaoLinha;
 				int colunaAtual = coluna + direcaoColuna;
 
 				// Verifica se o caminho até o destino está livre
 				while (linhaAtual != linha2 || colunaAtual != coluna2) {
-					if (c[linhaAtual][colunaAtual].getEstado() != EstadoCasa.LIVRE) {
+					if (c[linhaAtual][colunaAtual].getEstado() == EstadoCasa.OCUPADA) {
 						return false; // Caminho bloqueado
 					}
 					linhaAtual += direcaoLinha;
@@ -64,9 +64,10 @@ public class Torre extends Pecas {
 					c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
 					c[linha2][coluna2].setPiece(p);
 					return true;
-				}
-				
-				
+				}	
+			}
+			else {
+				return false;
 			}
 		}
 		return false; // Movimento inválido
