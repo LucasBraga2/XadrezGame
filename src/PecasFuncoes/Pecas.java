@@ -2,6 +2,7 @@ package PecasFuncoes;
 
 import Tabuleiro.Cor;
 
+
 public abstract class Pecas {
 
 	private Cor cor;
@@ -21,6 +22,10 @@ public abstract class Pecas {
 
 	public abstract String getSimbolo();
 
-	public abstract boolean move(String posInicial, String posFinal);
+	public abstract boolean movimentacaoPeca(String posInicial, String posFinal);
+	
+	public abstract void avancar(int linha, int coluna, int linha2, int coluna2, Pecas p);
+		
+	
 
 }

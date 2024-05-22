@@ -10,8 +10,8 @@ public class Partida {
 	private Cor JogadorAtual = Cor.BRANCO;
 	private Boolean xeque = false;
 	private Boolean xequeMate = false;
-	private int calculoP = 0;
-	private int calculoB = 0;
+	private static int calculoP = 0;
+	private static int calculoB = 0;
 
 	private ArrayList<Pecas> pecasDePb = new ArrayList<>();// Pecas do player branco
 	private ArrayList<Pecas> pecasDePp = new ArrayList<>();// Pecas do player preto

@@ -28,9 +28,9 @@ public class Peao extends Pecas {
 	public String getSimbolo() {
 		return (getCor() == Cor.BRANCO) ? "P" : "p"; // 'P' para peões brancos, 'p' para peões pretos
 	}
-	
+
 	@Override
-	public boolean move(String pos, String pos2) {
+	public boolean movimentacaoPeca(String pos, String pos2) {
 
 		int[] lc = t.converte(pos);
 		int linha = lc[0];
@@ -38,61 +38,62 @@ public class Peao extends Pecas {
 		int[] lc2 = t.converte(pos2);
 		int linha2 = lc2[0];
 		int coluna2 = lc2[1];
-		int difHori = Math.abs(coluna2 - coluna); // Diferença horizontal 
-		int difVert = Math.abs(linha2 - linha); // Diferença vertical 
+		int difHori = Math.abs(coluna2 - coluna); // Diferença horizontal
+		int difVert = Math.abs(linha2 - linha); // Diferença vertical
 		Casas[][] c = t.getCasas();
-		
-		if (c[linha][coluna].getPiece() != null) {
-		Pecas p = c[linha][coluna].getPiece();// Pegando peca da posicao
 
-		if (difHori == 0) {
-		    if (difVert == 2 && !movimentado) {// Checa se é um movimento de duas casas e se o peão não se moveu ainda.
-		        // Verifica se ambas as casas no caminho estão livres.
-		        if (c[linha2][coluna].getEstado() == EstadoCasa.LIVRE && c[linha + (linha2 - linha)/2][coluna].getEstado() == EstadoCasa.LIVRE) {
-		            c[linha][coluna].setPiece(null);
-		            c[linha][coluna].setEstado(EstadoCasa.LIVRE);
-		            c[linha2][coluna].setPiece(p);
-		            c[linha2][coluna].setEstado(EstadoCasa.OCUPADA);
-		            setMovimentado(true); // Atualiza o estado de movimentação do peão.
-		            return true;
-		        } else {		           
-		            return false; // Caminho bloqueado para movimento de duas casas
-		        }
-		    }
-		    else if (difVert == 1) {// Checa se é um movimento normal de uma casa para frente.
-		        if (c[linha2][coluna].getEstado() == EstadoCasa.LIVRE) {
-		            c[linha][coluna].setPiece(null);
-		            c[linha][coluna].setEstado(EstadoCasa.LIVRE);
-		            c[linha2][coluna].setPiece(p);
-		            c[linha2][coluna].setEstado(EstadoCasa.OCUPADA);
-		            setMovimentado(true); // Atualiza o estado de movimentação do peão.
-		            return true;
-		        } else {
-		            return false; // Caminho bloqueado para movimento de uma casa
-		        }
-		    } else {
-		        return false; // Movimento vertical inválido
-		    }
+		if (c[linha][coluna].getPiece() != null) {
+			Pecas p = c[linha][coluna].getPiece();// Pegando peca da posicao
+
+			if (difHori == 0) {
+				if (difVert == 2 && !movimentado) {// Checa se é um movimento de duas casas e se o peão não se moveu
+													// ainda.
+					// Verifica se ambas as casas no caminho estão livres.
+					if (c[linha2][coluna].getEstado() == EstadoCasa.LIVRE
+							&& c[linha + (linha2 - linha) / 2][coluna].getEstado() == EstadoCasa.LIVRE) {
+						c[linha][coluna].setPiece(null);
+						c[linha][coluna].setEstado(EstadoCasa.LIVRE);
+						c[linha2][coluna].setPiece(p);
+						c[linha2][coluna].setEstado(EstadoCasa.OCUPADA);
+						setMovimentado(true); // Atualiza o estado de movimentação do peão.
+						return true;
+					} else {
+						return false; // Caminho bloqueado para movimento de duas casas
+					}
+				} else if (difVert == 1) {// Checa se é um movimento normal de uma casa para frente.
+					if (c[linha2][coluna].getEstado() == EstadoCasa.LIVRE) {
+						c[linha][coluna].setPiece(null);
+						c[linha][coluna].setEstado(EstadoCasa.LIVRE);
+						c[linha2][coluna].setPiece(p);
+						c[linha2][coluna].setEstado(EstadoCasa.OCUPADA);
+						setMovimentado(true); // Atualiza o estado de movimentação do peão.
+						return true;
+					} else {
+						return false; // Caminho bloqueado para movimento de uma casa
+					}
+				} else {
+					return false; // Movimento vertical inválido
+				}
+			}
+			// Captura na diagonal.
+			else if (difHori == 1 && difVert == 1 && podeComer(pos, pos2) == 1) {
+				Pecas pecaCapturada = c[linha2][coluna2].getPiece();
+				game.removePecaDaLista(pecaCapturada);
+				c[linha2][coluna2].setPiece(p);
+				c[linha][coluna].setPiece(null);
+				c[linha][coluna].setEstado(EstadoCasa.LIVRE);
+				c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
+				setMovimentado(true); // Marca o peão como movido.
+				return true;
+			} else {
+				return false; // Movimento inválido
+			}
 		}
-		// Captura na diagonal.
-		else if (difHori == 1 && difVert == 1 && podeComer(pos, pos2) == 1) {
-			Pecas pecaCapturada = c[linha2][coluna2].getPiece();
-			game.removePecaDaLista(pecaCapturada);
-		    c[linha2][coluna2].setPiece(p);
-		    c[linha][coluna].setPiece(null);
-		    c[linha][coluna].setEstado(EstadoCasa.LIVRE);
-		    c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
-		    setMovimentado(true); // Marca o peão como movido.
-		    return true;
-		} else {
-			 return false; // Movimento inválido
-		}
-	}
 		return false;
 	}
-	
+
 	public int podeComer(String pos, String pos2) {
-		
+
 		int[] lc = t.converte(pos);
 		int linha = lc[0];
 		int coluna = lc[1];
@@ -100,7 +101,7 @@ public class Peao extends Pecas {
 		int linha2 = lc2[0];
 		int coluna2 = lc2[1];
 		Casas[][] c = t.getCasas();
-		
+
 		Pecas pecaOrigem = c[linha][coluna].getPiece();
 		Pecas pecaDestino = c[linha2][coluna2].getPiece();
 
@@ -115,6 +116,19 @@ public class Peao extends Pecas {
 		}
 
 	}
-	
-	
+
+	public void avancar(int linha, int coluna, int linha2, int coluna2, Pecas p) {
+		
+		Casas[][] c = t.getCasas();
+		
+		c[linha][coluna].setPiece(null);
+		c[linha][coluna].setEstado(EstadoCasa.LIVRE);
+		if (c[linha2][coluna2].getEstado() == EstadoCasa.OCUPADA) {
+			Pecas pecaCapturada = c[linha2][coluna2].getPiece();
+			game.removePecaDaLista(pecaCapturada);
+		}
+		c[linha2][coluna2].setPiece(p);
+		c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
+	}
+
 }

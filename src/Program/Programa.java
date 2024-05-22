@@ -79,7 +79,7 @@ public class Programa {
 				}
 			}
 			
-			if(!p.move(posInicial, posFinal)) {//MOVIMENTO
+			if(!p.movimentacaoPeca(posInicial, posFinal)) {//MOVIMENTO
 				System.out.println("Posição inválida, tente novamente.");
 				System.out.println("Aqui.");
 				continue;

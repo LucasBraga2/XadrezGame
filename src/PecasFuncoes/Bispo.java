@@ -19,7 +19,7 @@ public class Bispo extends Pecas {
 	}
 
 	@Override
-	public boolean move(String pos, String pos2) {
+	public boolean movimentacaoPeca(String pos, String pos2) {
 		int[] lc = t.converte(pos);
 		int linha = lc[0];
 		int coluna = lc[1];
@@ -46,24 +46,26 @@ public class Bispo extends Pecas {
 					colunaAtual += direcaoColuna;
 				}
 
-					if (c[linha2][coluna2].getEstado() == EstadoCasa.LIVRE) { // Movimento normal
-						c[linha][coluna].setPiece(null);
-						c[linha][coluna].setEstado(EstadoCasa.LIVRE);
-						c[linha2][coluna2].setPiece(p);
-						c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
-						return true;
-					} else { // Captura
-						Pecas pecaCapturada = c[linha2][coluna2].getPiece();
-						game.removePecaDaLista(pecaCapturada);
-						c[linha][coluna].setPiece(null);
-						c[linha][coluna].setEstado(EstadoCasa.LIVRE);
-						c[linha2][coluna2].setPiece(p);
-						c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
-						return true;
-					}
-				} 
-			} 
+				avancar(linha, coluna, linha2, coluna2, p);
+				return true;
+
+			}
+		}
 		return false;
+	}
+	
+	public void avancar(int linha, int coluna, int linha2, int coluna2, Pecas p) {
+		
+		Casas[][] c = t.getCasas();
+		
+		c[linha][coluna].setPiece(null);
+		c[linha][coluna].setEstado(EstadoCasa.LIVRE);
+		if (c[linha2][coluna2].getEstado() == EstadoCasa.OCUPADA) {
+			Pecas pecaCapturada = c[linha2][coluna2].getPiece();
+			game.removePecaDaLista(pecaCapturada);
+		}
+		c[linha2][coluna2].setPiece(p);
+		c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
 	}
 
 }
