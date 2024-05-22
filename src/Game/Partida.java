@@ -98,7 +98,7 @@ public class Partida {
 					return calculoB;
 				}
 			}
-			else {
+			else if(cor == Cor.BRANCO ){
 				return calculoB;
 			}
 			if (cor == Cor.PRETO && !pecasCapturadasPp.isEmpty()) {
@@ -108,7 +108,7 @@ public class Partida {
 					return calculoP;
 				}
 			}
-			else {
+			else if(cor == Cor.PRETO){
 				return calculoP;
 			}
 			return 0;
