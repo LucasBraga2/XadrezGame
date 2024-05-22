@@ -10,7 +10,8 @@ public class Partida {
 	private Cor JogadorAtual = Cor.BRANCO;
 	private Boolean xeque = false;
 	private Boolean xequeMate = false;
-	private int calculo = 0;
+	private int calculoP = 0;
+	private int calculoB = 0;
 
 	private ArrayList<Pecas> pecasDePb = new ArrayList<>();// Pecas do player branco
 	private ArrayList<Pecas> pecasDePp = new ArrayList<>();// Pecas do player preto
@@ -76,14 +77,6 @@ public class Partida {
 	public void setPecasDePp(ArrayList<Pecas> pecasDePp) {
 		this.pecasDePp = pecasDePp;
 	}
-	
-	public int getCalculo() {
-		return calculo;
-	}
-
-	public void setCalculo(int calculo) {
-		this.calculo = calculo;
-	}
 
 	public void removePecaDaLista(Pecas p) {
 
@@ -97,30 +90,45 @@ public class Partida {
 	}
 
 	public int contagemPecasCapturadas(Cor cor) {
-		
-		if(cor == Cor.BRANCO) {
-			for(Pecas p : pecasCapturadasPb) {
-				calculo += calculo(p);
+
+		if (cor == Cor.BRANCO && !pecasCapturadasPb.isEmpty()) {
+				for (Pecas p : pecasCapturadasPb) {
+					calculoB += calculo(p);
+					pecasCapturadasPb.remove(p);
+					return calculoB;
+				}
 			}
-		}
-		else {
-			for(Pecas p : pecasCapturadasPp) {
-				calculo += calculo(p);
+			else {
+				return calculoB;
 			}
+			if (cor == Cor.PRETO && !pecasCapturadasPp.isEmpty()) {
+				for (Pecas p : pecasCapturadasPp) {
+					calculoP += calculo(p);
+					pecasCapturadasPp.remove(p);
+					return calculoP;
+				}
+			}
+			else {
+				return calculoP;
+			}
+			return 0;
 		}
-		return calculo;
-	}
 
 	public int calculo(Pecas p) {
 
-		 switch (p.getClass().getSimpleName()) {
-	        case "Peao": return 1;
-	        case "Bispo":
-	        case "Cavalo": return 3;
-	        case "Torre": return 5;
-	        case "Rainha": return 9;
-	        default: return 0;
-	    }
+		switch (p.getClass().getSimpleName()) {
+		case "Peao":
+			return 1;
+		case "Bispo":
+		case "Cavalo":
+			return 3;
+		case "Torre":
+			return 5;
+		case "Rainha":
+			return 9;
+		default:
+			return 0;
+		}
 	}
 
 	public void posicionandoPeca(Pecas p, String pos) {

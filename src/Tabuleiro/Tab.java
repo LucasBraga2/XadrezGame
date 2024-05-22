@@ -111,7 +111,7 @@ public class Tab {
 	}
 
 	public void imprimeTabuleiro(Partida g) {
-		System.out.println(g.contagemPecasCapturadas(Cor.BRANCO));
+		System.out.println("Brancas, Pontuação: " +"(+"+g.contagemPecasCapturadas(Cor.BRANCO)+")");
 		System.out.println("  A B C D E F G H");
 		for (int i = 0; i < casas.length; i++) {
 			System.out.print((i + 1) + " "); // Imprime o número da linha
@@ -126,7 +126,7 @@ public class Tab {
 			}
 			System.out.println(); // Nova linha após cada linha do tabuleiro
 		}
-		System.out.println(g.contagemPecasCapturadas(Cor.PRETO));
+		System.out.println("Pretas, Pontuação: " +"(+"+g.contagemPecasCapturadas(Cor.PRETO)+")");
 	}
 
 }

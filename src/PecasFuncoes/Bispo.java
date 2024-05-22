@@ -33,23 +33,19 @@ public class Bispo extends Pecas {
 		if (c[linha][coluna].getPiece() != null) {
 			Pecas p = c[linha][coluna].getPiece();// Pegando peca da posicao
 			if (difHori == difVert) {
-				boolean caminhoLivre = true;
-				int deltaLinha = linha2 > linha ? 1 : -1;
-				int deltaColuna = coluna2 > coluna ? 1 : -1;
+				int direcaoLinha = Integer.compare(linha2, linha);
+				int direcaoColuna = Integer.compare(coluna2, coluna);
+				int linhaAtual = linha + direcaoLinha;
+				int colunaAtual = coluna + direcaoColuna;
 
-				int i = linha + deltaLinha;
-				int j = coluna + deltaColuna;
-
-				while (i != linha2 && j != coluna2) {
-					if (c[i][j].getEstado() != EstadoCasa.LIVRE) {
-						caminhoLivre = false;
-						break;
+				while (linhaAtual != linha2 && colunaAtual != coluna2) {
+					if (c[linhaAtual][colunaAtual].getEstado() == EstadoCasa.OCUPADA) {
+						return false;
 					}
-					i += deltaLinha;
-					j += deltaColuna;
+					linhaAtual += direcaoLinha;
+					colunaAtual += direcaoColuna;
 				}
 
-				if (caminhoLivre) {
 					if (c[linha2][coluna2].getEstado() == EstadoCasa.LIVRE) { // Movimento normal
 						c[linha][coluna].setPiece(null);
 						c[linha][coluna].setEstado(EstadoCasa.LIVRE);
@@ -65,13 +61,8 @@ public class Bispo extends Pecas {
 						c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
 						return true;
 					}
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		}
+				} 
+			} 
 		return false;
 	}
 

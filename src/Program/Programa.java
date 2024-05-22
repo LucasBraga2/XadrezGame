@@ -24,7 +24,7 @@ public class Programa {
 		Players p2 = new Players(sc.next(), Cor.PRETO, match.getPecasDePp());// Player 2
 		sc.nextLine();
 		
-		Pecas p;
+		Pecas p, pFinal;
 
 		match.configIncial();
 
@@ -34,12 +34,12 @@ public class Programa {
 
 		while (!match.getXequeMate()) {
 
-			Players jogadorAtual = (match.getJogadorAtual() == Cor.BRANCO) ? p1 : p2;
+			Players jogadorAtual = (match.getJogadorAtual() == Cor.BRANCO) ? p1 : p2;//DEFININDO JOGADOR DO TURNO
 			System.out.println("Vez de: " + jogadorAtual.getNome());
 			System.out.println("Cor: "+ jogadorAtual.getcor());
-			System.out.println("Digite a peça que deseja mover (e.g., 'A2'). A coluna deve ser de A-H e a linha de 1-8:");
 			
-			String posInicial = sc.nextLine().trim().toUpperCase();
+			System.out.println("Digite a peça que deseja mover (e.g., 'A2'). A coluna deve ser de A-H e a linha de 1-8:");	
+			String posInicial = sc.nextLine().trim().toUpperCase();//Digitar posicao inicial
 			
 			if (posInicial.isEmpty() || posInicial.length() != 2) {
 				System.out.println("Entrada inválida, tente novamente.");
@@ -56,18 +56,35 @@ public class Programa {
 				System.out.println("Não há peça sua nesta posição ou posição vazia, tente novamente.");
 				continue;
 			}
+			
 			System.out.println("Digite a posição para qual deseja mover a peça: ");
-			String posFinal = sc.nextLine().trim().toUpperCase();
-
+			String posFinal = sc.nextLine().trim().toUpperCase();//Digitar posicao final
+			
+			if (posFinal.isEmpty() || posFinal.length() != 2) {
+				System.out.println("Entrada inválida, tente novamente.");
+				continue;
+			}
+			
 			if (!t.posicaoValida(posFinal)) {
 				System.out.println("Posição inválida, tente novamente.");
 				continue;
 			}
-			if(!p.move(posInicial, posFinal)) {
+			if(t.existePeca(posFinal) == 0) {
+				
+				pFinal = t.pegaPeca(posFinal);
+				
+				if (pFinal == null || pFinal.getCor() == jogadorAtual.getcor()) {
+					System.out.println("A peça que deseja comer não é sua ou posição vazia, tente novamente.");
+					continue;
+				}
+			}
+			
+			if(!p.move(posInicial, posFinal)) {//MOVIMENTO
 				System.out.println("Posição inválida, tente novamente.");
+				System.out.println("Aqui.");
 				continue;
 			}
-			match.setJogadorAtual(match.getJogadorAtual() == Cor.BRANCO ? Cor.PRETO : Cor.BRANCO);
+			match.setJogadorAtual(match.getJogadorAtual() == Cor.BRANCO ? Cor.PRETO : Cor.BRANCO);//TROCA DE TURNO DE JOGADORES
 			t.imprimeTabuleiro(match);
 			System.out.println("Enter para continuar");
 			sc.nextLine();
