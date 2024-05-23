@@ -40,10 +40,11 @@ public class Rei extends Pecas {
 
 			Pecas p = c[linha][coluna].getPiece();// Pegando peca da posicao
 			
-			if(difVert == 1 && difHori == 0 || difVert == 0 && difHori == 1) {
+			if((difVert == 1 && difHori == 0) || (difVert == 0 && difHori == 1)|| (difVert == difHori)) {
 				avancar(linha, coluna, linha2, coluna2, p);
+				return true;
 			}
-		
+			
 		
 		
 		}

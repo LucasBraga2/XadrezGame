@@ -30,7 +30,9 @@ public class Programa {
 
 		p1.imprime_player(1);
 		p2.imprime_player(2);
+		System.out.println("==============================================================================");
 		t.imprimeTabuleiro(match);
+		System.out.println("==============================================================================");
 
 		while (!match.getXequeMate()) {
 
@@ -81,11 +83,12 @@ public class Programa {
 			
 			if(!p.movimentacaoPeca(posInicial, posFinal)) {//MOVIMENTO
 				System.out.println("Posição inválida, tente novamente.");
-				System.out.println("Aqui.");
 				continue;
 			}
 			match.setJogadorAtual(match.getJogadorAtual() == Cor.BRANCO ? Cor.PRETO : Cor.BRANCO);//TROCA DE TURNO DE JOGADORES
+			System.out.println("==============================================================================");
 			t.imprimeTabuleiro(match);
+			System.out.println("==============================================================================");
 			System.out.println("Enter para continuar");
 			sc.nextLine();
 
