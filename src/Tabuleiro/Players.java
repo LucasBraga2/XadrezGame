@@ -1,18 +1,13 @@
 package Tabuleiro;
 
-import PecasFuncoes.*;
-import java.util.ArrayList;
-
 public class Players {
 
 	private String nome;
 	private Cor cor;
-	private ArrayList<Pecas> pLista;
 
-	public Players(String nome, Cor cor, ArrayList<Pecas> pLista) {
+	public Players(String nome, Cor cor) {
 		this.nome = nome;
 		this.cor = cor;
-		this.pLista = pLista;
 	}
 
 	public String getNome() {
@@ -29,14 +24,6 @@ public class Players {
 
 	public void setcor(Cor cor) {
 		this.cor = cor;
-	}
-	
-	public ArrayList<Pecas> getpLista() {
-		return pLista;
-	}
-
-	public void setpLista(ArrayList<Pecas> pLista) {
-		this.pLista = pLista;
 	}
 
 	public void imprime_player(int x){

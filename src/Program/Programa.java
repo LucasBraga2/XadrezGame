@@ -19,9 +19,9 @@ public class Programa {
 		t.inicializa_tabuleiro();
 
 		System.out.println("Digite o nome do player de cor branca");
-		Players p1 = new Players(sc.next(), Cor.BRANCO, match.getPecasDePb());// Player 1
+		Players p1 = new Players(sc.next(), Cor.BRANCO);// Player 1
 		System.out.println("Digite o nome do player de cor preta");
-		Players p2 = new Players(sc.next(), Cor.PRETO, match.getPecasDePp());// Player 2
+		Players p2 = new Players(sc.next(), Cor.PRETO);// Player 2
 		sc.nextLine();
 		
 		Pecas p, pFinal;
@@ -29,10 +29,8 @@ public class Programa {
 		match.configIncial();
 
 		p1.imprime_player(1);
-		p2.imprime_player(2);
-		System.out.println("==============================================================================");
+		p2.imprime_player(2);		
 		t.imprimeTabuleiro(match);
-		System.out.println("==============================================================================");
 
 		while (!match.getXequeMate()) {
 
@@ -83,16 +81,13 @@ public class Programa {
 			
 			if(!p.movimentacaoPeca(posInicial, posFinal)) {//MOVIMENTO
 				System.out.println("Posição inválida, tente novamente.");
-				sc.nextLine();
-				System.out.println("==============================================================================");
+				System.out.println("Enter para continuar");
+				sc.nextLine();				
 				t.imprimeTabuleiro(match);
-				System.out.println("==============================================================================");
 				continue;
 			}
-			match.setJogadorAtual(match.getJogadorAtual() == Cor.BRANCO ? Cor.PRETO : Cor.BRANCO);//TROCA DE TURNO DE JOGADORES
-			System.out.println("==============================================================================");
+			match.setJogadorAtual(match.getJogadorAtual() == Cor.BRANCO ? Cor.PRETO : Cor.BRANCO);//TROCA DE TURNO DE JOGADORES			
 			t.imprimeTabuleiro(match);
-			System.out.println("==============================================================================");
 			System.out.println("Enter para continuar");
 			sc.nextLine();
 

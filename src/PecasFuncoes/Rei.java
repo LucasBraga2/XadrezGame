@@ -59,7 +59,7 @@ public class Rei extends Pecas {
 		c[linha][coluna].setEstado(EstadoCasa.LIVRE);
 		if (c[linha2][coluna2].getEstado() == EstadoCasa.OCUPADA) {
 			Pecas pecaCapturada = c[linha2][coluna2].getPiece();
-			game.removePecaDaLista(pecaCapturada);
+			game.addPecaCapturada(pecaCapturada);
 		}
 		c[linha2][coluna2].setPiece(p);
 		c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);

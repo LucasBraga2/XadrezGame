@@ -2,7 +2,6 @@ package Game;
 
 import Tabuleiro.*;
 import PecasFuncoes.*;
-import java.util.ArrayList;
 
 public class Partida {
 
@@ -10,13 +9,8 @@ public class Partida {
 	private Cor JogadorAtual = Cor.BRANCO;
 	private Boolean xeque = false;
 	private Boolean xequeMate = false;
-	private static int calculoP = 0;
-	private static int calculoB = 0;
-
-	private ArrayList<Pecas> pecasDePb = new ArrayList<>();// Pecas do player branco
-	private ArrayList<Pecas> pecasDePp = new ArrayList<>();// Pecas do player preto
-	private ArrayList<Pecas> pecasCapturadasPb = new ArrayList<>();// Pecas capturadas pelo player branco
-	private ArrayList<Pecas> pecasCapturadasPp = new ArrayList<>();// Pecas capturadas pelo player preto
+	private int pontuacaoBranca = 0;
+	private int pontuacaoPreta = 0;
 
 	public Partida(Tab tabuleiro) {
 		this.tabuleiro = tabuleiro;
@@ -46,98 +40,37 @@ public class Partida {
 		JogadorAtual = jogadorAtual;
 	}
 
-	public ArrayList<Pecas> getPecasCapturadasPb() {
-		return pecasCapturadasPb;
-	}
-
-	public void setPecasCapturadasPb(ArrayList<Pecas> pecasCapturadasPb) {
-		this.pecasCapturadasPb = pecasCapturadasPb;
-	}
-
-	public ArrayList<Pecas> getPecasCapturadasPp() {
-		return pecasCapturadasPp;
-	}
-
-	public void setPecasCapturadasPp(ArrayList<Pecas> pecasCapturadasPp) {
-		this.pecasCapturadasPp = pecasCapturadasPp;
-	}
-
-	public ArrayList<Pecas> getPecasDePb() {
-		return pecasDePb;
-	}
-
-	public void setPecasDePb(ArrayList<Pecas> pecasDePb) {
-		this.pecasDePb = pecasDePb;
-	}
-
-	public ArrayList<Pecas> getPecasDePp() {
-		return pecasDePp;
-	}
-
-	public void setPecasDePp(ArrayList<Pecas> pecasDePp) {
-		this.pecasDePp = pecasDePp;
-	}
-
-	public void removePecaDaLista(Pecas p) {
+	public void addPecaCapturada(Pecas p) {
 
 		if (p.getCor() == Cor.BRANCO) {
-			pecasDePb.remove(p);
-			pecasCapturadasPp.add(p);
+			pontuacaoPreta += calculo(p);
 		} else {
-			pecasDePp.remove(p);
-			pecasCapturadasPb.add(p);
+			pontuacaoBranca += calculo(p);
 		}
 	}
-
-	public int contagemPecasCapturadas(Cor cor) {
-
-		if (cor == Cor.BRANCO && !pecasCapturadasPb.isEmpty()) {
-				for (Pecas p : pecasCapturadasPb) {
-					calculoB += calculo(p);
-					pecasCapturadasPb.remove(p);
-					return calculoB;
-				}
-			}
-			else if(cor == Cor.BRANCO ){
-				return calculoB;
-			}
-			if (cor == Cor.PRETO && !pecasCapturadasPp.isEmpty()) {
-				for (Pecas p : pecasCapturadasPp) {
-					calculoP += calculo(p);
-					pecasCapturadasPp.remove(p);
-					return calculoP;
-				}
-			}
-			else if(cor == Cor.PRETO){
-				return calculoP;
-			}
-			return 0;
-		}
 
 	public int calculo(Pecas p) {
 
-		switch (p.getClass().getSimpleName()) {
-		case "Peao":
-			return 1;
-		case "Bispo":
-		case "Cavalo":
-			return 3;
-		case "Torre":
-			return 5;
-		case "Rainha":
-			return 9;
-		default:
-			return 0;
-		}
+		 if (p instanceof Peao) {
+		        return 1;
+		    } else if (p instanceof Bispo || p instanceof Cavalo) {
+		        return 3;
+		    } else if (p instanceof Torre) {
+		        return 5;
+		    } else if (p instanceof Rainha) {
+		        return 9;
+		    } else {
+		        return 0;
+		    }
+	}
+	
+	public int getPontuacao(Cor cor) {
+		
+		return (cor == Cor.BRANCO)? pontuacaoBranca : pontuacaoPreta;
 	}
 
 	public void posicionandoPeca(Pecas p, String pos) {
 		tabuleiro.posicionaPeca(p, pos);
-		if (p.getCor() == Cor.BRANCO) {
-			pecasDePb.add(p);
-		} else {
-			pecasDePp.add(p);
-		}
 	}
 
 	public void configIncial() {

@@ -77,18 +77,14 @@ public class Peao extends Pecas {
 			}
 			// Captura na diagonal.
 			else if (difHori == 1 && difVert == 1 && podeComer(pos, pos2) == 1) {
-				Pecas pecaCapturada = c[linha2][coluna2].getPiece();
-				game.removePecaDaLista(pecaCapturada);
-				c[linha2][coluna2].setPiece(p);
-				c[linha][coluna].setPiece(null);
-				c[linha][coluna].setEstado(EstadoCasa.LIVRE);
-				c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
+				avancar(linha, coluna, linha2, coluna2, p);
 				setMovimentado(true); // Marca o peão como movido.
 				return true;
 			} else {
 				return false; // Movimento inválido
 			}
 		}
+			
 		return false;
 	}
 
@@ -125,7 +121,7 @@ public class Peao extends Pecas {
 		c[linha][coluna].setEstado(EstadoCasa.LIVRE);
 		if (c[linha2][coluna2].getEstado() == EstadoCasa.OCUPADA) {
 			Pecas pecaCapturada = c[linha2][coluna2].getPiece();
-			game.removePecaDaLista(pecaCapturada);
+			game.addPecaCapturada(pecaCapturada);
 		}
 		c[linha2][coluna2].setPiece(p);
 		c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);

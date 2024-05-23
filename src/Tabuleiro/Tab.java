@@ -27,6 +27,15 @@ public class Tab {
 		}
 		return new int[] { linha, coluna };
 	}
+	
+	public String converteInverso(int linha, int coluna) {
+	    if (linha < 0 || linha >= 8 || coluna < 0 || coluna >= 8) {
+	        return "xo";
+	    }
+	    char colunaLetra = (char) ('A' + coluna); // Convertendo de 0 a 7 de volta para 'A' a 'H'
+	    int linhaNumero = linha + 1; // Convertendo de 0 a 7 de volta para '1' a '8'
+	    return colunaLetra + "" + linhaNumero;
+	}
 
 	public Boolean posicaoValida(String pos) {
 
@@ -111,22 +120,35 @@ public class Tab {
 	}
 
 	public void imprimeTabuleiro(Partida g) {
-		System.out.println("Brancas, Pontuação: " +"(+"+g.contagemPecasCapturadas(Cor.BRANCO)+")");
-		System.out.println("  A B C D E F G H");
-		for (int i = 0; i < casas.length; i++) {
-			System.out.print((i + 1) + " "); // Imprime o número da linha
-			for (int j = 0; j < casas[i].length; j++) {
-				Casas casa = casas[i][j];
-				if (casa.getEstado() == EstadoCasa.OCUPADA) { // Verifica se a casa está ocupada
-					Pecas peca = casa.getPiece();
-					System.out.print(peca.getSimbolo() + " "); // Imprime o símbolo da peça
-				} else {
-					System.out.print(". "); // Imprime um ponto para casas vazias
-				}
-			}
-			System.out.println(); // Nova linha após cada linha do tabuleiro
-		}
-		System.out.println("Pretas, Pontuação: " +"(+"+g.contagemPecasCapturadas(Cor.PRETO)+")");
+	    final String ANSI_RESET = "\u001B[0m";
+	    final String ANSI_WHITE = "\u001B[37m";
+	    final String ANSI_YELLOW = "\u001B[33m";
+
+	    System.out.println("==============================================================================");
+	    System.out.println("Brancas, Pontuação: (+ " + g.getPontuacao(Cor.BRANCO) + ")");
+	    System.out.println("==============================================================================");
+	    System.out.println("    A   B   C   D   E   F   G   H");
+	    System.out.println("  +---+---+---+---+---+---+---+---+");
+	    for (int i = 0; i < casas.length; i++) {
+	        System.out.print((i + 1) + " |");
+	        for (int j = 0; j < casas[i].length; j++) {
+	            Casas casa = casas[i][j];
+	            if (casa.getEstado() == EstadoCasa.OCUPADA) {
+	                String color = casa.getPiece().getCor() == Cor.BRANCO ? ANSI_WHITE : ANSI_YELLOW;
+	                System.out.print(color + " " + casa.getPiece().getSimbolo() + " " + ANSI_RESET + "|");
+	            } else {
+	                System.out.print("   |");
+	            }
+	        }
+	        System.out.println();
+	        System.out.println("  +---+---+---+---+---+---+---+---+");
+	    }
+	    System.out.println("==============================================================================");
+	    System.out.println("Pretas, Pontuação: (+ " + g.getPontuacao(Cor.PRETO) + ")");
+	    System.out.println("==============================================================================");
 	}
+
+
+
 
 }
