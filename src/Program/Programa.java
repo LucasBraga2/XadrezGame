@@ -83,6 +83,10 @@ public class Programa {
 			
 			if(!p.movimentacaoPeca(posInicial, posFinal)) {//MOVIMENTO
 				System.out.println("Posição inválida, tente novamente.");
+				sc.nextLine();
+				System.out.println("==============================================================================");
+				t.imprimeTabuleiro(match);
+				System.out.println("==============================================================================");
 				continue;
 			}
 			match.setJogadorAtual(match.getJogadorAtual() == Cor.BRANCO ? Cor.PRETO : Cor.BRANCO);//TROCA DE TURNO DE JOGADORES
