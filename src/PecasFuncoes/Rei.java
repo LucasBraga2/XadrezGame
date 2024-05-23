@@ -24,6 +24,29 @@ public class Rei extends Pecas {
 	
 	@Override
 	public boolean movimentacaoPeca(String pos, String pos2) {
+		
+
+		int[] lc = t.converte(pos);
+		int linha = lc[0];
+		int coluna = lc[1];
+		int[] lc2 = t.converte(pos2);
+		int linha2 = lc2[0];
+		int coluna2 = lc2[1];
+		int difHori = Math.abs(coluna2 - coluna); // Diferença horizontal
+		int difVert = Math.abs(linha2 - linha); // Diferença vertical
+		Casas[][] c = t.getCasas();
+
+		if (c[linha][coluna].getPiece() != null) {
+
+			Pecas p = c[linha][coluna].getPiece();// Pegando peca da posicao
+			
+			if(difVert == 1 && difHori == 0 || difVert == 0 && difHori == 1) {
+				avancar(linha, coluna, linha2, coluna2, p);
+			}
+		
+		
+		
+		}
 		return false;
 	}
 	
