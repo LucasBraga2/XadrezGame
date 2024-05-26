@@ -75,6 +75,7 @@ public class Rainha extends Pecas {
 		return false;
 	}
 	
+	@Override
 	public void avancar(int linha, int coluna, int linha2, int coluna2, Pecas p) {
 		
 		Casas[][] c = t.getCasas();
@@ -87,6 +88,26 @@ public class Rainha extends Pecas {
 		}
 		c[linha2][coluna2].setPiece(p);
 		c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
+	}
+	
+	@Override
+	public boolean analisaXeque(int linha, int coluna, int direcaoLinha, int direcaoColuna) {
+		
+		Casas[][] c = t.getCasas();
+		int linhaAtual = linha + direcaoLinha;
+		int colunaAtual = coluna + direcaoColuna;
+		
+		while (linhaAtual != linha && colunaAtual != coluna) {
+			if (c[linhaAtual][colunaAtual].getEstado() == EstadoCasa.OCUPADA) {
+				if(c[linhaAtual][colunaAtual].getPiece() instanceof Rei) {
+					return true;
+				}
+				return false;
+			}
+			linhaAtual += direcaoLinha;
+			colunaAtual += direcaoColuna;
+		}
+		return false;
 	}
 
 }

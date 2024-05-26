@@ -39,7 +39,7 @@ public class Partida {
 	public void setJogadorAtual(Cor jogadorAtual) {
 		JogadorAtual = jogadorAtual;
 	}
-
+	
 	public void addPecaCapturada(Pecas p) {
 
 		if (p.getCor() == Cor.BRANCO) {

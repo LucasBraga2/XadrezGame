@@ -25,7 +25,8 @@ public abstract class Pecas {
 	public abstract boolean movimentacaoPeca(String posInicial, String posFinal);
 	
 	public abstract void avancar(int linha, int coluna, int linha2, int coluna2, Pecas p);
-		
+	
+	public abstract boolean analisaXeque(int linha, int coluna, int direcaoLinha, int direcaoColuna);
 	
 
 }

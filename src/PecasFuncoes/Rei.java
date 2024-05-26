@@ -40,7 +40,7 @@ public class Rei extends Pecas {
 
 			Pecas p = c[linha][coluna].getPiece();// Pegando peca da posicao
 			
-			if((difVert == 1 && difHori == 0) || (difVert == 0 && difHori == 1)|| (difVert == difHori)) {
+			if((difVert == 1 && difHori == 0) || (difVert == 0 && difHori == 1)|| (difVert == difHori && difVert == 1 && difHori == 1 )) {
 				avancar(linha, coluna, linha2, coluna2, p);
 				return true;
 			}
@@ -51,6 +51,7 @@ public class Rei extends Pecas {
 		return false;
 	}
 	
+	@Override
 	public void avancar(int linha, int coluna, int linha2, int coluna2, Pecas p) {
 		
 		Casas[][] c = t.getCasas();
@@ -63,6 +64,26 @@ public class Rei extends Pecas {
 		}
 		c[linha2][coluna2].setPiece(p);
 		c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
+	}
+	
+	@Override
+	public boolean analisaXeque(int linha, int coluna, int direcaoLinha, int direcaoColuna) {
+		
+		Casas[][] c = t.getCasas();
+		int linhaAtual = linha + direcaoLinha;
+		int colunaAtual = coluna + direcaoColuna;
+		
+		while (linhaAtual != linha && colunaAtual != coluna) {
+			if (c[linhaAtual][colunaAtual].getEstado() == EstadoCasa.OCUPADA) {
+				if(c[linhaAtual][colunaAtual].getPiece() instanceof Rei) {
+					return true;
+				}
+				return false;
+			}
+			linhaAtual += direcaoLinha;
+			colunaAtual += direcaoColuna;
+		}
+		return false;
 	}
 
 }
