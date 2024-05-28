@@ -47,9 +47,6 @@ public class Bispo extends Pecas {
 				}
 
 				avancar(linha, coluna, linha2, coluna2, p);
-				if(analisaXeque(linha2, coluna2, direcaoLinha, direcaoColuna)) {
-					game.setXeque(true);
-				}
 				return true;
 
 			}
