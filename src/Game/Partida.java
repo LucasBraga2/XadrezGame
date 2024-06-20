@@ -2,27 +2,47 @@ package Game;
 
 import Tabuleiro.*;
 import PecasFuncoes.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.*;
 
 public class Partida {
 
 	private Tab tabuleiro;
 	private Cor JogadorAtual = Cor.BRANCO;
-	private Boolean xeque = false;
+	private Boolean xequeNoPreto = false;
+	private Boolean xequeNoBranco = false;
 	private Boolean xequeMate = false;
 	private int pontuacaoBranca = 0;
 	private int pontuacaoPreta = 0;
-
+	
 	public Partida(Tab tabuleiro) {
 		this.tabuleiro = tabuleiro;
 	}
 
-	public Boolean getXeque() {
-		return xeque;
+	public Boolean getXequeNoPreto() {
+		return xequeNoPreto;
 	}
 
-	public void setXeque(Boolean xeque) {
-		this.xeque = xeque;
+
+
+	public void setXequeNoPreto(Boolean xequeNoPreto) {
+		this.xequeNoPreto = xequeNoPreto;
 	}
+
+
+
+	public Boolean getXequeNoBranco() {
+		return xequeNoBranco;
+	}
+
+
+
+	public void setXequeNoBranco(Boolean xequeNoBranco) {
+		this.xequeNoBranco = xequeNoBranco;
+	}
+
+
 
 	public Boolean getXequeMate() {
 		return xequeMate;
@@ -40,6 +60,103 @@ public class Partida {
 		JogadorAtual = jogadorAtual;
 	}
 	
+	public void criaArquivo() {
+		
+		 try {
+			 File arq = new File("jogadasXadrez.txt");
+		      if (arq.createNewFile()) {
+		        System.out.println("Arquivo criado: " + arq.getName());
+		      } else {
+		        System.out.println("Arquivo ja existe.");
+		      }
+		    } catch (IOException e) {
+		      System.out.println("Aconteceu um erro.");
+		      e.printStackTrace();
+		    }
+	}
+	public void gravaEmDisco(Players j, Pecas p, String casaOri, String casaDest) {
+		
+		 try {
+		      FileWriter EscreverArq = new FileWriter("filename.txt");
+		      EscreverArq.write("Jogador: "+ j.getNome());
+		      EscreverArq.write("Peça movida: "+ p.getSimbolo());
+		      EscreverArq.write("Casa de origem: "+ casaOri);
+		      EscreverArq.write("Casa destino: "+ casaDest);
+		      EscreverArq.close();
+		      System.out.println("Arquivo armazenado");
+		    } catch (IOException e) {
+		      System.out.println("Aconteceu um erro.");
+		      e.printStackTrace();
+		    }
+		
+	}
+	
+	public boolean moveRemoveXeque(String posInicial, String posFinal, Cor corDoJogador) {
+	    // Simula o movimento
+	    int[] inicial = tabuleiro.converte(posInicial);
+	    int[] finalPos = tabuleiro.converte(posFinal);
+	    Casas[][] casas = tabuleiro.getCasas();
+	    Casas casaInicial = casas[inicial[0]][inicial[1]];
+	    Casas casaFinal = casas[finalPos[0]][finalPos[1]];
+	    Pecas peca = casaInicial.getPiece();
+	    Pecas pecaCapturada = casaFinal.getPiece();
+
+	    // Realiza o movimento
+	    casaInicial.setPiece(null);
+	    casaFinal.setPiece(peca);
+
+	    // Verifica se ainda está em xeque
+	    boolean aindaEmXeque = verificaSeReiEmXeque(corDoJogador);
+
+	    // Desfaz o movimento
+	    casaInicial.setPiece(peca);
+	    casaFinal.setPiece(pecaCapturada);
+
+	    return !aindaEmXeque;
+	}
+
+
+	public boolean verificaSeReiEmXeque(Cor corDoRei) {
+	    
+		Rei rei = tabuleiro.encontreORei(corDoRei);
+	    int linhaRei = rei.getLinha(corDoRei);
+	    int colunaRei = rei.getColuna(corDoRei);
+
+	    if (linhaRei == -1 || colunaRei == -1) {
+	        throw new IllegalStateException("O rei da cor " + corDoRei + " não foi encontrado no tabuleiro.");
+	    }
+
+	    for (int i = 0; i < tabuleiro.getCasas().length; i++) {
+	        for (int j = 0; j < tabuleiro.getCasas()[i].length; j++) {
+	            Pecas peca = tabuleiro.getCasas()[i][j].getPiece();
+	            if (peca != null && peca.getCor() != corDoRei) {
+	                if (peca.podeAtacar(i, j, linhaRei, colunaRei)) {
+	                    return true;  // O Rei está em xeque
+	                }
+	            }
+	        }
+	    }
+	    return false;
+	}
+
+	
+	public List<Pecas> listaDePecasAdversarias(Cor corDoRei) {
+	    
+		List<Pecas> adversarias = new ArrayList<>();
+	    Casas[][] c = tabuleiro.getCasas();
+	    Cor corAdversaria = (corDoRei == Cor.BRANCO) ? Cor.PRETO : Cor.BRANCO;
+
+	    for (int i = 0; i < c.length; i++) {
+	        for (int j = 0; j < c[i].length; j++) {
+	            Pecas peca = c[i][j].getPiece();
+	            if (peca != null && peca.getCor() == corAdversaria) {
+	                adversarias.add(peca);
+	            }
+	        }
+	    }
+	    return adversarias;
+	}
+
 	public void addPecaCapturada(Pecas p) {
 
 		if (p.getCor() == Cor.BRANCO) {

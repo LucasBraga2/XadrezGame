@@ -1,7 +1,6 @@
 package Program;
-
+import java.io.*;
 import Tabuleiro.Cor;
-//import Tabuleiro.Casas;
 import Tabuleiro.Players;
 import Tabuleiro.Tab;
 import PecasFuncoes.*;
@@ -15,6 +14,7 @@ public class Programa {
 		Scanner sc = new Scanner(System.in);
 		Tab t = new Tab();// Tabuleiro
 		Partida match = new Partida(t);
+		match.criaArquivo();
 
 		t.inicializa_tabuleiro();
 
@@ -38,6 +38,12 @@ public class Programa {
 			System.out.println("Vez de: " + jogadorAtual.getNome());
 			System.out.println("Cor: "+ jogadorAtual.getcor());
 			
+			boolean emXeque = (jogadorAtual.getcor() == Cor.BRANCO) ? match.getXequeNoBranco() : match.getXequeNoPreto();
+		    
+		    if (emXeque) {
+		        System.out.println("Você está em xeque! Você deve mover seu Rei ou bloquear/capturar a peça de ataque.");
+		    }
+		    
 			System.out.println("Digite a peça que deseja mover (e.g., 'A2'). A coluna deve ser de A-H e a linha de 1-8:");	
 			String posInicial = sc.nextLine().trim().toUpperCase();//Digitar posicao inicial
 			
@@ -79,19 +85,39 @@ public class Programa {
 				}
 			}
 			
-			if(!p.movimentacaoPeca(posInicial, posFinal)) {//MOVIMENTO
-				System.out.println("Posição inválida, tente novamente.");
-				System.out.println("Enter para continuar");
-				sc.nextLine();				
-				t.imprimeTabuleiro(match);
-				continue;
-			}
+			  if (match.moveRemoveXeque(posInicial, posFinal, jogadorAtual.getcor())) { // Verifica se o movimento é válido e não deixa o rei em xeque
+	  
+	              if(!p.movimentacaoPeca(posInicial, posFinal)) {//MOVIMENTO
+	  				System.out.println("Posição inválida, tente novamente.");
+	  				System.out.println("Enter para continuar");
+	  				sc.nextLine();				
+	  				t.imprimeTabuleiro(match);
+	  				continue;
+	  			}
+	  			else {//Foi movimentado
+	  				match.gravaEmDisco(jogadorAtual, t.pegaPeca(posFinal), posInicial, posFinal);
+	  				 if (p.analisaXeque(t.converte(posFinal)[0], t.converte(posFinal)[1])) {
+	  	                    if (jogadorAtual.getcor() == Cor.BRANCO) {
+	  	                        match.setXequeNoPreto(true);
+	  	                        System.out.println("O Rei Preto esta em xeque!");
+	  	                    } else {
+	  	                        match.setXequeNoBranco(true);
+	  	                        System.out.println("O Rei Branco esta em xeque!");
+	  	                    }
+	  	                }
+	  			}
+	              //match.setJogadorAtual(match.getJogadorAtual() == Cor.BRANCO ? Cor.PRETO : Cor.BRANCO);
+	          } else {
+	              System.out.println("Este movimento não resolve a situação de xeque, tente outro.");
+	          }
+	      	
 			match.setJogadorAtual(match.getJogadorAtual() == Cor.BRANCO ? Cor.PRETO : Cor.BRANCO);//TROCA DE TURNO DE JOGADORES			
 			t.imprimeTabuleiro(match);
 			System.out.println("Enter para continuar");
 			sc.nextLine();
-
-		}
-		sc.close();
 	}
-}
+			sc.close();
+		}
+		
+	}
+

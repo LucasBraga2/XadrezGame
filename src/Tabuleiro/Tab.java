@@ -14,7 +14,18 @@ public class Tab {
 	public Casas[][] getCasas() {
 		return casas;
 	}
-
+	
+	public Rei encontreORei(Cor corDoRei) {
+        for (int i = 0; i < casas.length; i++) {
+            for (int j = 0; j < casas[i].length; j++) {
+                if (casas[i][j].getPiece() instanceof Rei && casas[i][j].getPiece().getCor() == corDoRei) {
+                    return (Rei) casas[i][j].getPiece();
+                }
+            }
+        }
+        return null; // Retorna null se o rei não for encontrado (o que não deveria acontecer).
+    }
+	
 	public int[] converte(String pos) {
 
 		if (pos == null || pos.length() != 2) {

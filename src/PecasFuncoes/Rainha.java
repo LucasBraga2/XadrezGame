@@ -91,23 +91,77 @@ public class Rainha extends Pecas {
 	}
 	
 	@Override
-	public boolean analisaXeque(int linha, int coluna, int direcaoLinha, int direcaoColuna) {
-		
+	public boolean analisaXeque(int linhaFinal, int colunaFinal) {
+		  
 		Casas[][] c = t.getCasas();
-		int linhaAtual = linha + direcaoLinha;
-		int colunaAtual = coluna + direcaoColuna;
-		
-		while (linhaAtual != linha && colunaAtual != coluna) {
-			if (c[linhaAtual][colunaAtual].getEstado() == EstadoCasa.OCUPADA) {
-				if(c[linhaAtual][colunaAtual].getPiece() instanceof Rei) {
-					return true;
-				}
-				return false;
-			}
-			linhaAtual += direcaoLinha;
-			colunaAtual += direcaoColuna;
-		}
-		return false;
+		    int[][] direcoes = {
+		        {1, 0}, {0, 1}, {-1, 0}, {0, -1}, // Movimentos verticais e horizontais (Torre)
+		        {1, 1}, {1, -1}, {-1, 1}, {-1, -1} // Movimentos diagonais (Bispo)
+		    };
+
+		    // Verificar em todas as direções
+		    for (int[] direcao : direcoes) {
+		        int linhaAtual = linhaFinal + direcao[0];
+		        int colunaAtual = colunaFinal + direcao[1];
+
+		        while (linhaAtual >= 0 && linhaAtual < c.length && colunaAtual >= 0 && colunaAtual < c[0].length) {
+		            if (c[linhaAtual][colunaAtual].getEstado() == EstadoCasa.OCUPADA) {
+		                Pecas peca = c[linhaAtual][colunaAtual].getPiece();
+		                if (peca instanceof Rei && peca.getCor() != this.getCor()) {
+		                    return true; // Encontrou um Rei adversário, portanto está em xeque
+		                }
+		                break; // Outra peça bloqueia a visão
+		            }
+		            linhaAtual += direcao[0];
+		            colunaAtual += direcao[1];
+		        }
+		    }
+		    return false;
+	}
+	
+	
+	@Override
+	public boolean podeAtacar(int linhaAtual, int colunaAtual, int linhaRei, int colunaRei) {
+	    // Combina os movimentos da torre e do bispo
+	    return podeAtacarComoTorre(linhaAtual, colunaAtual, linhaRei, colunaRei) ||
+	           podeAtacarComoBispo(linhaAtual, colunaAtual, linhaRei, colunaRei);
+	}
+	
+	private boolean podeAtacarComoTorre(int linhaAtual, int colunaAtual, int linhaRei, int colunaRei) {
+	    if (linhaAtual == linhaRei || colunaAtual == colunaRei) {
+	        int stepLinha = (linhaRei == linhaAtual) ? 0 : (linhaRei > linhaAtual) ? 1 : -1;
+	        int stepColuna = (colunaRei == colunaAtual) ? 0 : (colunaRei > colunaAtual) ? 1 : -1;
+	        int tempLinha = linhaAtual + stepLinha;
+	        int tempColuna = colunaAtual + stepColuna;
+	        while (tempLinha != linhaRei || tempColuna != colunaRei) {
+	            if (t.getCasas()[tempLinha][tempColuna].getEstado() == EstadoCasa.OCUPADA) {
+	                return false; // Caminho bloqueado
+	            }
+	            tempLinha += stepLinha;
+	            tempColuna += stepColuna;
+	        }
+	        return true;
+	    }
+	    return false;
+	}
+	
+	private boolean podeAtacarComoBispo(int linhaAtual, int colunaAtual, int linhaRei, int colunaRei) {
+	    if (Math.abs(linhaRei - linhaAtual) == Math.abs(colunaRei - colunaAtual)) {
+	        int stepLinha = (linhaRei > linhaAtual) ? 1 : -1;
+	        int stepColuna = (colunaRei > colunaAtual) ? 1 : -1;
+	        int tempLinha = linhaAtual + stepLinha;
+	        int tempColuna = colunaAtual + stepColuna;
+	        while (tempLinha != linhaRei && tempColuna != colunaRei) {
+	            if (t.getCasas()[tempLinha][tempColuna].getEstado() == EstadoCasa.OCUPADA) {
+	                return false; // Caminho bloqueado
+	            }
+	            tempLinha += stepLinha;
+	            tempColuna += stepColuna;
+	        }
+	        return true;
+	    }
+	    return false;
 	}
 
+	
 }

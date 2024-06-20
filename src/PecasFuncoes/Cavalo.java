@@ -63,22 +63,37 @@ public class Cavalo extends Pecas {
 	}
 	
 	@Override
-	public boolean analisaXeque(int linha, int coluna, int direcaoLinha, int direcaoColuna) {
-		
-		Casas[][] c = t.getCasas();
-		int linhaAtual = linha + direcaoLinha;
-		int colunaAtual = coluna + direcaoColuna;
-		
-		while (linhaAtual != linha && colunaAtual != coluna) {
-			if (c[linhaAtual][colunaAtual].getEstado() == EstadoCasa.OCUPADA) {
-				if(c[linhaAtual][colunaAtual].getPiece() instanceof Rei) {
-					return true;
-				}
-				return false;
-			}
-			linhaAtual += direcaoLinha;
-			colunaAtual += direcaoColuna;
-		}
-		return false;
+	public boolean analisaXeque(int linhaFinal, int colunaFinal) {
+		 
+		int[][] direcoes = {
+		            {2, 1}, {2, -1}, {-2, 1}, {-2, -1},
+		            {1, 2}, {1, -2}, {-1, 2}, {-1, -2}
+		        };
+
+		        Casas[][] c = t.getCasas();
+		        for (int[] dir : direcoes) {
+		            int linhaNova = linhaFinal + dir[0];
+		            int colunaNova = colunaFinal + dir[1];
+
+		            // Verifica se a nova posição está dentro dos limites do tabuleiro
+		            if (linhaNova >= 0 && linhaNova < c.length && colunaNova >= 0 && colunaNova < c[0].length) {
+		                if (c[linhaNova][colunaNova].getEstado() == EstadoCasa.OCUPADA) {
+		                    Pecas peca = c[linhaNova][colunaNova].getPiece();
+		                    // Verifica se a peça é um rei e se é de cor oposta
+		                    if (peca instanceof Rei && peca.getCor() != this.getCor()) {
+		                        return true; // O cavalo está colocando o rei adversário em xeque
+		                    }
+		                }
+		            }
+		        }
+		        return false; // Nenhum rei em xeque encontrado nas posições possíveis
+		    }
+	
+	@Override
+	public boolean podeAtacar(int linha, int coluna, int linhaRei, int colunaRei) {
+	    int difLinha = Math.abs(linhaRei - linha);
+	    int difColuna = Math.abs(colunaRei - coluna);
+	    return (difLinha == 2 && difColuna == 1) || (difLinha == 1 && difColuna == 2);
 	}
+
 }

@@ -21,7 +21,31 @@ public class Rei extends Pecas {
 	public String getSimbolo() {
 		return (getCor() == Cor.BRANCO) ? "R" : "r"; // 'P' para peões brancos, 'p' para peões pretos
 	}
+	public int getLinha(Cor corDoRei) {
+        
+		Casas[][] casas = t.getCasas();
+		for (int i = 0; i < casas.length; i++) {
+            for (int j = 0; j < casas[i].length; j++) {
+                if (casas[i][j].getPiece() instanceof Rei && casas[i][j].getPiece().getCor() == corDoRei) {
+                    return i;
+                }
+            }
+        }
+        return -1; 
+    }
 	
+	public int getColuna(Cor corDoRei) {
+        
+		Casas[][] casas = t.getCasas();
+		for (int i = 0; i < casas.length; i++) {
+            for (int j = 0; j < casas[i].length; j++) {
+                if (casas[i][j].getPiece() instanceof Rei && casas[i][j].getPiece().getCor() == corDoRei) {
+                    return j;
+                }
+            }
+        }
+        return -1; 
+    }
 	@Override
 	public boolean movimentacaoPeca(String pos, String pos2) {
 		
@@ -45,10 +69,8 @@ public class Rei extends Pecas {
 				return true;
 			}
 			
-		
-		
 		}
-		return false;
+		return false;	
 	}
 	
 	@Override
@@ -67,23 +89,14 @@ public class Rei extends Pecas {
 	}
 	
 	@Override
-	public boolean analisaXeque(int linha, int coluna, int direcaoLinha, int direcaoColuna) {
-		
-		Casas[][] c = t.getCasas();
-		int linhaAtual = linha + direcaoLinha;
-		int colunaAtual = coluna + direcaoColuna;
-		
-		while (linhaAtual != linha && colunaAtual != coluna) {
-			if (c[linhaAtual][colunaAtual].getEstado() == EstadoCasa.OCUPADA) {
-				if(c[linhaAtual][colunaAtual].getPiece() instanceof Rei) {
-					return true;
-				}
-				return false;
-			}
-			linhaAtual += direcaoLinha;
-			colunaAtual += direcaoColuna;
-		}
-		return false;
+	public boolean analisaXeque(int linhaFinal, int colunaFinal) {return false;}
+	
+	@Override
+	public boolean podeAtacar(int linhaAtual, int colunaAtual, int linhaRei, int colunaRei) {
+	    int difLinha = Math.abs(linhaRei - linhaAtual);
+	    int difColuna = Math.abs(colunaRei - colunaAtual);
+	    return difLinha <= 1 && difColuna <= 1;
 	}
+
 
 }

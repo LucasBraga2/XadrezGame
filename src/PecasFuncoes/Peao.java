@@ -129,23 +129,34 @@ public class Peao extends Pecas {
 	}
 	
 	@Override
-	public boolean analisaXeque(int linha, int coluna, int direcaoLinha, int direcaoColuna) {
+	public boolean analisaXeque(int linhaFinal, int colunaFinal) {
 		
-		Casas[][] c = t.getCasas();
-		int linhaAtual = linha + direcaoLinha;
-		int colunaAtual = coluna + direcaoColuna;
+		 int direcao = getCor() == Cor.BRANCO ? 1 : -1; // Branco avança para cima, Preto para baixo
+	        int[] possiveisLinhas = {linhaFinal + direcao};
+	        int[] possiveisColunas = {colunaFinal - 1, colunaFinal + 1};
+
+	        for (int novaColuna : possiveisColunas) {
+	            if (novaColuna >= 0 && novaColuna < t.getCasas()[0].length && possiveisLinhas[0] >= 0 && possiveisLinhas[0] < t.getCasas().length) {
+	                Casas casaDestino = t.getCasas()[possiveisLinhas[0]][novaColuna];
+	                if (casaDestino.getEstado() == EstadoCasa.OCUPADA) {
+	                    Pecas peca = casaDestino.getPiece();
+	                    if (peca instanceof Rei && peca.getCor() != this.getCor()) {
+	                        return true; // O peão pode colocar o Rei em xeque
+	                    }
+	                }
+	            }
+	        }
+
+	        return false;
+	}
+	
+	@Override
+	public boolean podeAtacar(int linha, int coluna,int linhaRei, int colunaRei) {
+	    
 		
-		while (linhaAtual != linha && colunaAtual != coluna) {
-			if (c[linhaAtual][colunaAtual].getEstado() == EstadoCasa.OCUPADA) {
-				if(c[linhaAtual][colunaAtual].getPiece() instanceof Rei) {
-					return true;
-				}
-				return false;
-			}
-			linhaAtual += direcaoLinha;
-			colunaAtual += direcaoColuna;
-		}
-		return false;
+		int linhaDirecao = (this.getCor() == Cor.BRANCO) ? 1 : -1;  // Peões brancos movem-se para cima, peões pretos para baixo
+	    // Verifica se o Rei está em uma das duas diagonais imediatas à frente do peão
+	    return (linha + linhaDirecao == linhaRei) && (Math.abs(coluna - colunaRei) == 1);
 	}
 
 }
