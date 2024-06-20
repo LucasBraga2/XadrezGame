@@ -1,1 +1,0 @@
-Jogador: LucasPeça movida: PCasa de origem: D2Casa destino: D4

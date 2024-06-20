@@ -5,6 +5,7 @@ import PecasFuncoes.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
+import java.util.Scanner;
 
 public class Partida {
 
@@ -74,14 +75,34 @@ public class Partida {
 		      e.printStackTrace();
 		    }
 	}
-	public void gravaEmDisco(Players j, Pecas p, String casaOri, String casaDest) {
+	public void gravaEmDisco(Players j, Pecas p, String casaOri, String casaDest){
+		
 		
 		 try {
-		      FileWriter EscreverArq = new FileWriter("filename.txt");
+			 String nomePeca = null;
+			 FileWriter EscreverArq = new FileWriter("jogadasXadrez.txt");
+		      if(p.getSimbolo() == "P" || p.getSimbolo() == "p" ) {
+		    	  nomePeca = "Peao";
+		      }
+		      else if(p.getSimbolo() == "T" || p.getSimbolo() == "t" ) {
+		    	  nomePeca = "Torre";
+		      }
+		      else if(p.getSimbolo() == "Q" || p.getSimbolo() == "q" ) {
+		    	  nomePeca = "Rainha";
+		      }
+		      else if(p.getSimbolo() == "R" || p.getSimbolo() == "r" ) {
+		    	  nomePeca = "Rei";
+		      }
+		      else if(p.getSimbolo() == "B" || p.getSimbolo() == "b" ) {
+		    	  nomePeca = "Bispo";
+		      }
+		      else if(p.getSimbolo() == "C" || p.getSimbolo() == "c" ) {
+		    	  nomePeca = "Cavalo";
+		      }
 		      EscreverArq.write("Jogador: "+ j.getNome());
-		      EscreverArq.write("Peça movida: "+ p.getSimbolo());
-		      EscreverArq.write("Casa de origem: "+ casaOri);
-		      EscreverArq.write("Casa destino: "+ casaDest);
+		      EscreverArq.write("\nPeça movida: "+ nomePeca);
+		      EscreverArq.write("\nCasa de origem: "+ casaOri);
+		      EscreverArq.write("\nCasa destino: "+ casaDest);
 		      EscreverArq.close();
 		      System.out.println("Arquivo armazenado");
 		    } catch (IOException e) {
@@ -89,6 +110,22 @@ public class Partida {
 		      e.printStackTrace();
 		    }
 		
+	}
+	
+	public void lerDisco() {
+		
+		 try {
+		      File lerArq = new File("jogadasXadrez.txt");
+		      Scanner ler = new Scanner(lerArq);
+		      while (ler.hasNextLine()) {
+		        String data = ler.nextLine();
+		        System.out.println(data);
+		      }
+		      ler.close();
+		    } catch (FileNotFoundException e) {
+		      System.out.println("Ocorreu um erro.");
+		      e.printStackTrace();
+		    }
 	}
 	
 	public boolean moveRemoveXeque(String posInicial, String posFinal, Cor corDoJogador) {
@@ -116,9 +153,9 @@ public class Partida {
 	}
 
 
+
 	public boolean verificaSeReiEmXeque(Cor corDoRei) {
-	    
-		Rei rei = tabuleiro.encontreORei(corDoRei);
+	    Rei rei = tabuleiro.encontreORei(corDoRei);
 	    int linhaRei = rei.getLinha(corDoRei);
 	    int colunaRei = rei.getColuna(corDoRei);
 
@@ -138,24 +175,23 @@ public class Partida {
 	    }
 	    return false;
 	}
-
 	
 	public List<Pecas> listaDePecasAdversarias(Cor corDoRei) {
 	    
-		List<Pecas> adversarias = new ArrayList<>();
-	    Casas[][] c = tabuleiro.getCasas();
-	    Cor corAdversaria = (corDoRei == Cor.BRANCO) ? Cor.PRETO : Cor.BRANCO;
+		  List<Pecas> adversarias = new ArrayList<>();
+		    Casas[][] c = tabuleiro.getCasas();
+		    Cor corAdversaria = (corDoRei == Cor.BRANCO) ? Cor.PRETO : Cor.BRANCO;
 
-	    for (int i = 0; i < c.length; i++) {
-	        for (int j = 0; j < c[i].length; j++) {
-	            Pecas peca = c[i][j].getPiece();
-	            if (peca != null && peca.getCor() == corAdversaria) {
-	                adversarias.add(peca);
-	            }
-	        }
-	    }
-	    return adversarias;
-	}
+		    for (int i = 0; i < c.length; i++) {
+		        for (int j = 0; j < c[i].length; j++) {
+		            Pecas peca = c[i][j].getPiece();
+		            if (peca != null && peca.getCor() == corAdversaria) {
+		                adversarias.add(peca);
+		            }
+		        }
+		    }
+		    return adversarias;
+		}
 
 	public void addPecaCapturada(Pecas p) {
 
