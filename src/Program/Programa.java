@@ -98,10 +98,10 @@ public class Programa {
                     if (p.analisaXeque(t.converte(posFinal)[0], t.converte(posFinal)[1])) {
                         if (jogadorAtual.getcor() == Cor.BRANCO) {
                             match.setXequeNoPreto(true);
-                            System.out.println("O Rei Preto esta em xeque!");
+                            System.out.println("O Rei Preto está em xeque!");
                         } else {
                             match.setXequeNoBranco(true);
-                            System.out.println("O Rei Branco esta em xeque!");
+                            System.out.println("O Rei Branco está em xeque!");
                         }
                     } else {
                         if (jogadorAtual.getcor() == Cor.BRANCO) {

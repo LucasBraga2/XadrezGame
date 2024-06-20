@@ -1,4 +1,24 @@
 Jogador: Lucas
+
+Peça movida: Peão
+
+Casa de origem: D2
+
+Casa destino: D4
+----------------------------
+Jogador: Bob
+
+Peça movida: Peão
+
+Casa de origem: E7
+
+Casa destino: E5
+----------------------------
+Jogador: Lucas
+
 Peça movida: Rainha
+
 Casa de origem: D1
-Casa destino: A4
+
+Casa destino: D3
+----------------------------

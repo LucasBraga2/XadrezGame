@@ -62,71 +62,88 @@ public class Partida {
 	}
 	
 	public void criaArquivo() {
-		
-		 try {
-			 File arq = new File("jogadasXadrez.txt");
-		      if (arq.createNewFile()) {
-		        System.out.println("Arquivo criado: " + arq.getName());
-		      } else {
-		        System.out.println("Arquivo ja existe.");
-		      }
-		    } catch (IOException e) {
-		      System.out.println("Aconteceu um erro.");
-		      e.printStackTrace();
-		    }
+	    try {
+	        File arq = new File("jogadasXadrez.txt");
+	        if (arq.exists()) {
+	            if (arq.delete()) {
+	                System.out.println("Arquivo antigo excluído.");
+	            } else {
+	                System.out.println("Não foi possível excluir o arquivo antigo.");
+	            }
+	        }
+	        if (arq.createNewFile()) {
+	            System.out.println("Novo arquivo criado: " + arq.getName());
+	        } else {
+	            System.out.println("Arquivo já existe.");
+	        }
+	    } catch (IOException e) {
+	        System.out.println("Aconteceu um erro.");
+	        e.printStackTrace();
+	    }
 	}
-	public void gravaEmDisco(Players j, Pecas p, String casaOri, String casaDest){
-		
-		
-		 try {
-			 String nomePeca = null;
-			 FileWriter EscreverArq = new FileWriter("jogadasXadrez.txt");
-		      if(p.getSimbolo() == "P" || p.getSimbolo() == "p" ) {
-		    	  nomePeca = "Peao";
-		      }
-		      else if(p.getSimbolo() == "T" || p.getSimbolo() == "t" ) {
-		    	  nomePeca = "Torre";
-		      }
-		      else if(p.getSimbolo() == "Q" || p.getSimbolo() == "q" ) {
-		    	  nomePeca = "Rainha";
-		      }
-		      else if(p.getSimbolo() == "R" || p.getSimbolo() == "r" ) {
-		    	  nomePeca = "Rei";
-		      }
-		      else if(p.getSimbolo() == "B" || p.getSimbolo() == "b" ) {
-		    	  nomePeca = "Bispo";
-		      }
-		      else if(p.getSimbolo() == "C" || p.getSimbolo() == "c" ) {
-		    	  nomePeca = "Cavalo";
-		      }
-		      EscreverArq.write("Jogador: "+ j.getNome());
-		      EscreverArq.write("\nPeça movida: "+ nomePeca);
-		      EscreverArq.write("\nCasa de origem: "+ casaOri);
-		      EscreverArq.write("\nCasa destino: "+ casaDest);
-		      EscreverArq.close();
-		      System.out.println("Arquivo armazenado");
-		    } catch (IOException e) {
-		      System.out.println("Aconteceu um erro.");
-		      e.printStackTrace();
-		    }
-		
+
+	public void gravaEmDisco(Players j, Pecas p, String casaOri, String casaDest) {
+	    try (FileWriter EscreverArq = new FileWriter("jogadasXadrez.txt", true); // true para modo de anexação
+	         BufferedWriter buffer = new BufferedWriter(EscreverArq);
+	         PrintWriter out = new PrintWriter(buffer)) {
+
+	        String nomePeca = null;
+	        String simbolo = p.getSimbolo();
+	        switch (simbolo) {
+	            case "P":
+	            case "p":
+	                nomePeca = "Peão";
+	                break;
+	            case "T":
+	            case "t":
+	                nomePeca = "Torre";
+	                break;
+	            case "Q":
+	            case "q":
+	                nomePeca = "Rainha";
+	                break;
+	            case "R":
+	            case "r":
+	                nomePeca = "Rei";
+	                break;
+	            case "B":
+	            case "b":
+	                nomePeca = "Bispo";
+	                break;
+	            case "C":
+	            case "c":
+	                nomePeca = "Cavalo";
+	                break;
+	        }
+
+	        out.println("Jogador: " + j.getNome());
+	        out.println("\nPeça movida: " + nomePeca);
+	        out.println("\nCasa de origem: " + casaOri);
+	        out.println("\nCasa destino: " + casaDest);
+	        out.println("----------------------------");
+	        System.out.println("Movimento registrado no arquivo.");
+	    } catch (IOException e) {
+	        System.out.println("Aconteceu um erro.");
+	        e.printStackTrace();
+	    }
 	}
+
 	
 	public void lerDisco() {
-		
-		 try {
-		      File lerArq = new File("jogadasXadrez.txt");
-		      Scanner ler = new Scanner(lerArq);
-		      while (ler.hasNextLine()) {
-		        String data = ler.nextLine();
-		        System.out.println(data);
-		      }
-		      ler.close();
-		    } catch (FileNotFoundException e) {
-		      System.out.println("Ocorreu um erro.");
-		      e.printStackTrace();
-		    }
+	    try {
+	        File lerArq = new File("jogadasXadrez.txt");
+	        Scanner ler = new Scanner(lerArq);
+	        while (ler.hasNextLine()) {
+	            String data = ler.nextLine();
+	            System.out.println(data);
+	        }
+	        ler.close();
+	    } catch (FileNotFoundException e) {
+	        System.out.println("Ocorreu um erro.");
+	        e.printStackTrace();
+	    }
 	}
+
 	
 	public boolean moveRemoveXeque(String posInicial, String posFinal, Cor corDoJogador) {
 	    // Simula o movimento
