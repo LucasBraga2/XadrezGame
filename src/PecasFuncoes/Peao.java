@@ -123,7 +123,17 @@ public class Peao extends Pecas {
 		if (c[linha2][coluna2].getEstado() == EstadoCasa.OCUPADA) {
 			Pecas pecaCapturada = c[linha2][coluna2].getPiece();
 			game.addPecaCapturada(pecaCapturada);
+			if(pecaCapturada instanceof Rei) {
+				if(pecaCapturada.getCor()==Cor.BRANCO) {
+					game.setJogadorGanhador(Cor.PRETO);
+				}
+				else {
+					game.setJogadorGanhador(Cor.BRANCO);
+				}
+				game.setXequeMate(true);
+			}
 		}
+		
 		c[linha2][coluna2].setPiece(p);
 		c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
 	}
@@ -148,15 +158,6 @@ public class Peao extends Pecas {
 	        }
 
 	        return false;
-	}
-	
-	@Override
-	public boolean podeAtacar(int linha, int coluna,int linhaRei, int colunaRei) {
-	    
-		
-		int linhaDirecao = (this.getCor() == Cor.BRANCO) ? 1 : -1;  // Peões brancos movem-se para cima, peões pretos para baixo
-	    // Verifica se o Rei está em uma das duas diagonais imediatas à frente do peão
-	    return (linha + linhaDirecao == linhaRei) && (Math.abs(coluna - colunaRei) == 1);
 	}
 
 }

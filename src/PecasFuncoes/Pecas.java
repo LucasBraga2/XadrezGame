@@ -28,7 +28,5 @@ public abstract class Pecas {
 	
 	public abstract boolean analisaXeque(int linhaFinal, int colunaFinal);
 	
-	public abstract boolean podeAtacar(int linha, int clouna,int linhaRei, int colunaRei);
-	
 
 }

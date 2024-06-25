@@ -2,8 +2,6 @@ package Game;
 
 import Tabuleiro.*;
 import PecasFuncoes.*;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.*;
 import java.util.Scanner;
 
@@ -16,7 +14,34 @@ public class Partida {
 	private Boolean xequeMate = false;
 	private int pontuacaoBranca = 0;
 	private int pontuacaoPreta = 0;
+	private String posDoXeque;
+	private Pecas pDoXeque;
+	private Cor jogadorGanhador;
 	
+	public Cor getJogadorGanhador() {
+		return jogadorGanhador;
+	}
+
+	public void setJogadorGanhador(Cor jogadorGanhador) {
+		this.jogadorGanhador = jogadorGanhador;
+	}
+
+	public Pecas getpDoXeque() {
+		return pDoXeque;
+	}
+
+	public void setpDoXeque(Pecas pDoXeque) {
+		this.pDoXeque = pDoXeque;
+	}
+
+	public String getPosDoXeque() {
+		return posDoXeque;
+	}
+
+	public void setPosDoXeque(String posDoXeque) {
+		this.posDoXeque = posDoXeque;
+	}
+
 	public Partida(Tab tabuleiro) {
 		this.tabuleiro = tabuleiro;
 	}
@@ -129,86 +154,95 @@ public class Partida {
 	}
 
 	
-	public void lerDisco() {
+	public void lerDisco(String nomeJogador) {
 	    try {
 	        File lerArq = new File("jogadasXadrez.txt");
 	        Scanner ler = new Scanner(lerArq);
+	        boolean lerTodas = (nomeJogador == null || nomeJogador.isEmpty());
+	        boolean jogadorEncontrado = false;
+	        
 	        while (ler.hasNextLine()) {
 	            String data = ler.nextLine();
-	            System.out.println(data);
+	            if (lerTodas || data.contains("Jogador: " + nomeJogador)) {
+	                jogadorEncontrado = true;
+	                System.out.println(data);
+	                // Imprime as próximas linhas relacionadas a esta jogada até encontrar a linha separadora
+	                while (ler.hasNextLine()) {
+	                    data = ler.nextLine();
+	                    System.out.println(data);
+	                    if (data.equals("----------------------------")) {
+	                        break;
+	                    }
+	                }
+	            }
 	        }
 	        ler.close();
+	        if (!jogadorEncontrado && !lerTodas) {
+	            System.out.println("Nenhuma jogada encontrada para o jogador: " + nomeJogador);
+	        }
 	    } catch (FileNotFoundException e) {
-	        System.out.println("Ocorreu um erro.");
+	        System.out.println("O arquivo de jogadas não foi encontrado.");
 	        e.printStackTrace();
 	    }
 	}
 
+
+
+	public void menu(Players p1, Players p2) {
+		int opcao = 0;
+		Scanner sc = new Scanner(System.in);
+
+		while (opcao != 4) {
+		    System.out.println("Verificar jogadas de: ");
+		    System.out.println("1 - " + p1.getNome());
+		    System.out.println("2 - " + p2.getNome());
+		    System.out.println("3 - Todas as jogadas do jogo");
+		    System.out.println("4 - Sair");
+		    
+		    System.out.print("Escolha uma opção: ");
+		    opcao = sc.nextInt();
+		    sc.nextLine();  
+
+		    switch (opcao) {
+		        case 1:
+		            lerDisco(p1.getNome());
+		            break;
+		        case 2:
+		            lerDisco(p2.getNome());
+		            break;
+		        case 3:
+		            lerDisco(null);  
+		            break;
+		        case 4:
+		            System.out.println("Saindo...");
+		            break;
+		        default:
+		            System.out.println("Opção inválida! Tente novamente.");
+		            break;
+		    }
+		    if (opcao != 4) {
+		        System.out.println("Pressione Enter para continuar...");
+		        sc.nextLine();  
+		    }
+		}
+
+		sc.close();
+
+	}
 	
-	public boolean moveRemoveXeque(String posInicial, String posFinal, Cor corDoJogador) {
-	    // Simula o movimento
+	public void desfazerMovimento(String posInicial, String posFinal, Pecas comida) {
 	    int[] inicial = tabuleiro.converte(posInicial);
 	    int[] finalPos = tabuleiro.converte(posFinal);
 	    Casas[][] casas = tabuleiro.getCasas();
 	    Casas casaInicial = casas[inicial[0]][inicial[1]];
 	    Casas casaFinal = casas[finalPos[0]][finalPos[1]];
-	    Pecas peca = casaInicial.getPiece();
-	    Pecas pecaCapturada = casaFinal.getPiece();
+	    Pecas peca = casaFinal.getPiece();
 
-	    // Realiza o movimento
-	    casaInicial.setPiece(null);
-	    casaFinal.setPiece(peca);
-
-	    // Verifica se ainda está em xeque
-	    boolean aindaEmXeque = verificaSeReiEmXeque(corDoJogador);
-
-	    // Desfaz o movimento
 	    casaInicial.setPiece(peca);
-	    casaFinal.setPiece(pecaCapturada);
-
-	    return !aindaEmXeque;
+	    casaFinal.setPiece(comida);
+	    casaInicial.setEstado(EstadoCasa.OCUPADA);
+	    casaFinal.setEstado(comida != null ? EstadoCasa.OCUPADA : EstadoCasa.LIVRE);
 	}
-
-
-
-	public boolean verificaSeReiEmXeque(Cor corDoRei) {
-	    Rei rei = tabuleiro.encontreORei(corDoRei);
-	    int linhaRei = rei.getLinha(corDoRei);
-	    int colunaRei = rei.getColuna(corDoRei);
-
-	    if (linhaRei == -1 || colunaRei == -1) {
-	        throw new IllegalStateException("O rei da cor " + corDoRei + " não foi encontrado no tabuleiro.");
-	    }
-
-	    for (int i = 0; i < tabuleiro.getCasas().length; i++) {
-	        for (int j = 0; j < tabuleiro.getCasas()[i].length; j++) {
-	            Pecas peca = tabuleiro.getCasas()[i][j].getPiece();
-	            if (peca != null && peca.getCor() != corDoRei) {
-	                if (peca.podeAtacar(i, j, linhaRei, colunaRei)) {
-	                    return true;  // O Rei está em xeque
-	                }
-	            }
-	        }
-	    }
-	    return false;
-	}
-	
-	public List<Pecas> listaDePecasAdversarias(Cor corDoRei) {
-	    
-		  List<Pecas> adversarias = new ArrayList<>();
-		    Casas[][] c = tabuleiro.getCasas();
-		    Cor corAdversaria = (corDoRei == Cor.BRANCO) ? Cor.PRETO : Cor.BRANCO;
-
-		    for (int i = 0; i < c.length; i++) {
-		        for (int j = 0; j < c[i].length; j++) {
-		            Pecas peca = c[i][j].getPiece();
-		            if (peca != null && peca.getCor() == corAdversaria) {
-		                adversarias.add(peca);
-		            }
-		        }
-		    }
-		    return adversarias;
-		}
 
 	public void addPecaCapturada(Pecas p) {
 

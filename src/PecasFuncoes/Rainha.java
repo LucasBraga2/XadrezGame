@@ -85,7 +85,17 @@ public class Rainha extends Pecas {
 		if (c[linha2][coluna2].getEstado() == EstadoCasa.OCUPADA) {
 			Pecas pecaCapturada = c[linha2][coluna2].getPiece();
 			game.addPecaCapturada(pecaCapturada);
+			if(pecaCapturada instanceof Rei) {
+				if(pecaCapturada.getCor()==Cor.BRANCO) {
+					game.setJogadorGanhador(Cor.PRETO);
+				}
+				else {
+					game.setJogadorGanhador(Cor.BRANCO);
+				}
+				game.setXequeMate(true);
+			}
 		}
+		
 		c[linha2][coluna2].setPiece(p);
 		c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
 	}
@@ -119,49 +129,5 @@ public class Rainha extends Pecas {
 		    return false;
 	}
 	
-	
-	@Override
-	public boolean podeAtacar(int linhaAtual, int colunaAtual, int linhaRei, int colunaRei) {
-	    // Combina os movimentos da torre e do bispo
-	    return podeAtacarComoTorre(linhaAtual, colunaAtual, linhaRei, colunaRei) ||
-	           podeAtacarComoBispo(linhaAtual, colunaAtual, linhaRei, colunaRei);
-	}
-	
-	private boolean podeAtacarComoTorre(int linhaAtual, int colunaAtual, int linhaRei, int colunaRei) {
-	    if (linhaAtual == linhaRei || colunaAtual == colunaRei) {
-	        int stepLinha = (linhaRei == linhaAtual) ? 0 : (linhaRei > linhaAtual) ? 1 : -1;
-	        int stepColuna = (colunaRei == colunaAtual) ? 0 : (colunaRei > colunaAtual) ? 1 : -1;
-	        int tempLinha = linhaAtual + stepLinha;
-	        int tempColuna = colunaAtual + stepColuna;
-	        while (tempLinha != linhaRei || tempColuna != colunaRei) {
-	            if (t.getCasas()[tempLinha][tempColuna].getEstado() == EstadoCasa.OCUPADA) {
-	                return false; // Caminho bloqueado
-	            }
-	            tempLinha += stepLinha;
-	            tempColuna += stepColuna;
-	        }
-	        return true;
-	    }
-	    return false;
-	}
-	
-	private boolean podeAtacarComoBispo(int linhaAtual, int colunaAtual, int linhaRei, int colunaRei) {
-	    if (Math.abs(linhaRei - linhaAtual) == Math.abs(colunaRei - colunaAtual)) {
-	        int stepLinha = (linhaRei > linhaAtual) ? 1 : -1;
-	        int stepColuna = (colunaRei > colunaAtual) ? 1 : -1;
-	        int tempLinha = linhaAtual + stepLinha;
-	        int tempColuna = colunaAtual + stepColuna;
-	        while (tempLinha != linhaRei && tempColuna != colunaRei) {
-	            if (t.getCasas()[tempLinha][tempColuna].getEstado() == EstadoCasa.OCUPADA) {
-	                return false; // Caminho bloqueado
-	            }
-	            tempLinha += stepLinha;
-	            tempColuna += stepColuna;
-	        }
-	        return true;
-	    }
-	    return false;
-	}
-
 	
 }

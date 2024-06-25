@@ -57,7 +57,17 @@ public class Cavalo extends Pecas {
 		if (c[linha2][coluna2].getEstado() == EstadoCasa.OCUPADA) {
 			Pecas pecaCapturada = c[linha2][coluna2].getPiece();
 			game.addPecaCapturada(pecaCapturada);
+			if(pecaCapturada instanceof Rei) {
+				if(pecaCapturada.getCor()==Cor.BRANCO) {
+					game.setJogadorGanhador(Cor.PRETO);
+				}
+				else {
+					game.setJogadorGanhador(Cor.BRANCO);
+				}
+				game.setXequeMate(true);
+			}
 		}
+		
 		c[linha2][coluna2].setPiece(p);
 		c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
 	}
@@ -88,12 +98,5 @@ public class Cavalo extends Pecas {
 		        }
 		        return false; // Nenhum rei em xeque encontrado nas posições possíveis
 		    }
-	
-	@Override
-	public boolean podeAtacar(int linha, int coluna, int linhaRei, int colunaRei) {
-	    int difLinha = Math.abs(linhaRei - linha);
-	    int difColuna = Math.abs(colunaRei - coluna);
-	    return (difLinha == 2 && difColuna == 1) || (difLinha == 1 && difColuna == 2);
-	}
 
 }

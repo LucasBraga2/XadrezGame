@@ -72,7 +72,6 @@ public class Rei extends Pecas {
 		}
 		return false;	
 	}
-	
 	@Override
 	public void avancar(int linha, int coluna, int linha2, int coluna2, Pecas p) {
 		
@@ -83,19 +82,47 @@ public class Rei extends Pecas {
 		if (c[linha2][coluna2].getEstado() == EstadoCasa.OCUPADA) {
 			Pecas pecaCapturada = c[linha2][coluna2].getPiece();
 			game.addPecaCapturada(pecaCapturada);
+			if(pecaCapturada instanceof Rei) {
+				if(pecaCapturada.getCor()==Cor.BRANCO) {
+					game.setJogadorGanhador(Cor.PRETO);
+				}
+				else {
+					game.setJogadorGanhador(Cor.BRANCO);
+				}
+				game.setXequeMate(true);
+			}
 		}
+		
 		c[linha2][coluna2].setPiece(p);
 		c[linha2][coluna2].setEstado(EstadoCasa.OCUPADA);
 	}
-	
 	@Override
-	public boolean analisaXeque(int linhaFinal, int colunaFinal) {return false;}
-	
-	@Override
-	public boolean podeAtacar(int linhaAtual, int colunaAtual, int linhaRei, int colunaRei) {
-	    int difLinha = Math.abs(linhaRei - linhaAtual);
-	    int difColuna = Math.abs(colunaRei - colunaAtual);
-	    return difLinha <= 1 && difColuna <= 1;
+	public boolean analisaXeque(int linhaFinal, int colunaFinal) {
+	    Casas[][] casas = t.getCasas();
+	    
+	    // Verificar todas as posições ao redor do rei para ameaças
+	    int[][] direcoes = {
+	        {-1, -1}, {-1, 0}, {-1, 1},
+	        {0, -1}, /* {0, 0}, rei */ {0, 1},
+	        {1, -1}, {1, 0}, {1, 1}
+	    };
+
+	    for (int[] direcao : direcoes) {
+	        int novaLinha = linhaFinal + direcao[0];
+	        int novaColuna = colunaFinal + direcao[1];
+
+	        if (novaLinha >= 0 && novaLinha < 8 && novaColuna >= 0 && novaColuna < 8) { // Certifique-se que está dentro do tabuleiro
+	            Casas casa = casas[novaLinha][novaColuna];
+	            if (casa.getEstado() == EstadoCasa.OCUPADA && casa.getPiece().getCor() != this.getCor()) {
+	                // Se há uma peça adversária na posição, verificar se ela pode atacar o rei
+	                if (casa.getPiece().analisaXeque(novaLinha, novaColuna)) {
+	                    return true; // O rei está em xeque por esta peça
+	                }
+	            }
+	        }
+	    }
+
+	    return false; // Nenhuma peça está colocando o rei em xeque nas posições adjacentes
 	}
 
 

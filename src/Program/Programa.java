@@ -83,11 +83,9 @@ public class Programa {
                     System.out.println("A peça que deseja comer não é sua ou posição vazia, tente novamente.");
                     continue;
                 }
-            }
+            }           
 
-            if (match.moveRemoveXeque(posInicial, posFinal, jogadorAtual.getcor())) { // Verifica se o movimento é válido e não deixa o rei em xeque
-
-                if (!p.movimentacaoPeca(posInicial, posFinal)) {// MOVIMENTO
+                if (!p.movimentacaoPeca(posInicial, posFinal)) {// MOVIMENTO INVALIDO
                     System.out.println("Posição inválida, tente novamente.");
                     System.out.println("Enter para continuar");
                     sc.nextLine();
@@ -95,31 +93,33 @@ public class Programa {
                     continue;
                 } else {// Foi movimentado
                     match.gravaEmDisco(jogadorAtual, t.pegaPeca(posFinal), posInicial, posFinal);
-                    if (p.analisaXeque(t.converte(posFinal)[0], t.converte(posFinal)[1])) {
-                        if (jogadorAtual.getcor() == Cor.BRANCO) {
-                            match.setXequeNoPreto(true);
-                            System.out.println("O Rei Preto está em xeque!");
-                        } else {
-                            match.setXequeNoBranco(true);
-                            System.out.println("O Rei Branco está em xeque!");
-                        }
-                    } else {
-                        if (jogadorAtual.getcor() == Cor.BRANCO) {
-                            match.setXequeNoPreto(false);
-                        } else {
-                            match.setXequeNoBranco(false);
-                        }
+                    
+                    if(p.analisaXeque(t.converte(posFinal)[0], t.converte(posFinal)[1])){
+                    	if(jogadorAtual.getcor()==Cor.BRANCO) {
+                    		match.setXequeNoPreto(true);
+                    		match.setPosDoXeque(posFinal);  
+                    		match.setpDoXeque(p);
+                    	}
+                    	else {
+                    		match.setXequeNoBranco(true);
+                    		match.setPosDoXeque(posFinal);
+                    		match.setpDoXeque(p);
+                    	}
                     }
+                    
                     match.setJogadorAtual(match.getJogadorAtual() == Cor.BRANCO ? Cor.PRETO : Cor.BRANCO);
+                    }
+                t.imprimeTabuleiro(match);  
+                System.out.println("Enter para continuar");
+                sc.nextLine();
                 }
-            } else {
-                System.out.println("Este movimento não resolve a situação de xeque, tente outro.");
-            }
+             
+        	System.out.println("Xeque-mate! " + (match.getJogadorGanhador() == Cor.BRANCO ? "Brancas" : "Pretas") + " vencem!");    
+            match.menu(p1,p2);
 
-            t.imprimeTabuleiro(match);
-            System.out.println("Enter para continuar");
-            sc.nextLine();
+            sc.close();
         }
-        sc.close();
+        
+ 
     }
-}
+
